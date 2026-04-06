@@ -28,6 +28,7 @@ import { GameTimer } from './GameTimer';
 import { TurnTimer } from './TurnTimer';
 import { DiceButton } from '../ui/DiceButton';
 import { ThemeToggle } from '../ui/ThemeToggle';
+import { SoundToggle } from '../ui/SoundToggle';
 import { ChatButton } from '../chat/ChatButton';
 import { ChatPanel } from '../chat/ChatPanel';
 import { MessageNotification } from '../chat/MessageNotification';
@@ -143,7 +144,12 @@ export function GameBoard() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-gray-100 dark:bg-gray-900">
-      <ThemeToggle />
+      {/* Theme and Sound Toggles */}
+      <div className="fixed top-6 right-6 flex gap-3 z-50">
+        <SoundToggle />
+        <ThemeToggle />
+      </div>
+      
       <GameTimer />
       <TurnTimer />
       <ChatButton />

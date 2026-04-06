@@ -27,6 +27,14 @@ export function useSound() {
   const audioCtxRef = useRef<AudioContext | null>(null);
   const enabledRef = useRef(true);
 
+  // Load mute state from localStorage on mount
+  useCallback(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('ludo-sound-enabled');
+      enabledRef.current = saved === null ? true : saved === 'true';
+    }
+  }, [])();
+
   const getAudioContext = useCallback(() => {
     if (!audioCtxRef.current) {
       audioCtxRef.current = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
@@ -69,6 +77,9 @@ export function useSound() {
 
   const toggleSound = useCallback(() => {
     enabledRef.current = !enabledRef.current;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('ludo-sound-enabled', String(enabledRef.current));
+    }
     return enabledRef.current;
   }, []);
 

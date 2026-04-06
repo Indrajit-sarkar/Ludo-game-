@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useGameStore } from '@/hooks/useGameState';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { SoundToggle } from '@/components/ui/SoundToggle';
 
 export function LobbyScreen() {
   const router = useRouter();
@@ -95,7 +96,11 @@ export function LobbyScreen() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8 relative overflow-hidden">
-      <ThemeToggle />
+      {/* Theme and Sound Toggles */}
+      <div className="fixed top-6 right-6 flex gap-3 z-50">
+        <SoundToggle />
+        <ThemeToggle />
+      </div>
       
       {/* Animated background blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
