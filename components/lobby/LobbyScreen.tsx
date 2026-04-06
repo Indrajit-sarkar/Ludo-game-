@@ -254,29 +254,6 @@ export function LobbyScreen() {
                   </div>
                 </div>
 
-                {/* Color Dropdown */}
-                <div className="space-y-1.5">
-                  <label className={`block text-xs font-bold uppercase tracking-wide ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
-                    Choose Color (Optional)
-                  </label>
-                  <select
-                    value={selectedColor || ''}
-                    onChange={(e) => setSelectedColor(e.target.value as PlayerColor || null)}
-                    className={`w-full px-4 py-2.5 border rounded-xl text-sm transition-all focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 ${
-                      isDark 
-                        ? 'bg-gray-800/50 border-gray-700 text-white' 
-                        : 'bg-white border-gray-300 text-gray-900'
-                    }`}
-                  >
-                    <option value="">Random Color</option>
-                    {COLORS.map((color) => (
-                      <option key={color} value={color}>
-                        {color.charAt(0).toUpperCase() + color.slice(1)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
                 {/* Create Game Button */}
                 <motion.button
                   whileHover={{ scale: 1.02 }}
