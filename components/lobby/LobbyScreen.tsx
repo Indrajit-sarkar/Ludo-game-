@@ -98,50 +98,53 @@ export function LobbyScreen() {
       <ThemeToggle />
       
       {/* Animated background blobs */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-red-500/10 rounded-full blur-3xl -top-32 -left-32 animate-pulse" />
-        <div className="absolute w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-blue-500/10 rounded-full blur-3xl -bottom-20 -right-20 animate-pulse delay-1000" />
-        <div className="absolute w-[200px] sm:w-[300px] h-[200px] sm:h-[300px] bg-green-500/10 rounded-full blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse delay-500" />
-        <div className="absolute w-[220px] sm:w-[350px] h-[220px] sm:h-[350px] bg-yellow-500/10 rounded-full blur-3xl top-20 right-20 animate-pulse delay-700" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute w-[400px] h-[400px] bg-red-500/20 rounded-full blur-3xl -top-32 -left-32 animate-pulse" />
+        <div className="absolute w-[350px] h-[350px] bg-blue-500/20 rounded-full blur-3xl -bottom-20 -right-20 animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute w-[300px] h-[300px] bg-green-500/20 rounded-full blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse" style={{ animationDelay: '0.5s' }} />
+        <div className="absolute w-[320px] h-[320px] bg-yellow-500/20 rounded-full blur-3xl top-20 right-20 animate-pulse" style={{ animationDelay: '0.7s' }} />
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="relative z-10 w-full max-w-md"
+        className="relative z-10 w-full max-w-2xl"
       >
-        {/* Glass card */}
-        <div className="backdrop-blur-xl bg-white/10 rounded-3xl border border-white/20 shadow-2xl p-6 sm:p-8 space-y-6 hover-lift transition-all">
-          {/* Logo/Title */}
-          <div className="text-center space-y-2">
+        {/* Main Card */}
+        <div className="backdrop-blur-2xl bg-white/95 dark:bg-gray-900/95 rounded-3xl shadow-2xl border border-gray-200 dark:border-white/10 p-8 sm:p-12 space-y-8">
+          
+          {/* Header */}
+          <div className="text-center space-y-4">
             <motion.div
               initial={{ scale: 0.5 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', bounce: 0.5, delay: 0.2 }}
-              className="flex items-center justify-center gap-2 mb-4"
+              className="flex items-center justify-center gap-3 mb-2"
             >
-              <span className="text-2xl sm:text-3xl">🎲</span>
-              <h1 className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 to-blue-400 bg-clip-text text-transparent">
+              <span className="text-4xl sm:text-5xl">🎲</span>
+              <h1 className="text-4xl sm:text-6xl font-black bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 to-blue-500 bg-clip-text text-transparent">
                 LUDO ARENA
               </h1>
-              <span className="text-2xl sm:text-3xl">🎲</span>
+              <span className="text-4xl sm:text-5xl">🎲</span>
             </motion.div>
-            <p className="text-white/60 text-sm">
+            <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg font-medium">
               The classic board game, reimagined in 3D
             </p>
           </div>
 
           {/* Name Input */}
-          <div className="space-y-2">
-            <label className="text-white/70 text-sm font-medium">Your Name</label>
+          <div className="space-y-3">
+            <label className="block text-gray-700 dark:text-gray-300 text-sm font-semibold uppercase tracking-wide">
+              Your Name
+            </label>
             <input
               type="text"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
               placeholder="Enter your name..."
               maxLength={20}
-              className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 transition-all touch-feedback"
+              className="w-full px-6 py-4 text-lg rounded-2xl bg-gray-100 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-yellow-500 dark:focus:border-yellow-400 focus:ring-4 focus:ring-yellow-500/20 transition-all"
             />
           </div>
 
@@ -152,23 +155,28 @@ export function LobbyScreen() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
-                className="space-y-4"
+                className="space-y-6"
               >
                 {/* Mode Selection */}
-                <div className="space-y-2">
-                  <label className="text-white/70 text-sm font-medium">Game Mode</label>
-                  <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-3">
+                  <label className="block text-gray-700 dark:text-gray-300 text-sm font-semibold uppercase tracking-wide">
+                    Game Mode
+                  </label>
+                  <div className="grid grid-cols-2 gap-4">
                     {(['2-player', '4-player'] as const).map((m) => (
                       <button
                         key={m}
                         onClick={() => setMode(m)}
-                        className={`relative py-3 px-4 rounded-xl font-semibold text-sm transition-all touch-feedback ${
+                        className={`relative py-5 px-6 rounded-2xl font-bold text-base transition-all ${
                           mode === m
-                            ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-black shadow-lg shadow-yellow-500/25'
-                            : 'bg-white/10 text-white/70 hover:bg-white/20 border border-white/10'
+                            ? 'bg-gradient-to-br from-yellow-400 to-orange-500 text-white shadow-xl shadow-yellow-500/30 scale-105'
+                            : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 border-2 border-gray-300 dark:border-gray-700'
                         }`}
                       >
-                        {m === '2-player' ? '👥 2 Players' : '👥👥 4 Players'}
+                        <div className="flex flex-col items-center gap-2">
+                          <span className="text-2xl">{m === '2-player' ? '👥' : '👥👥'}</span>
+                          <span>{m === '2-player' ? '2 Players' : '4 Players'}</span>
+                        </div>
                       </button>
                     ))}
                   </div>
@@ -180,23 +188,26 @@ export function LobbyScreen() {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleCreate}
                   disabled={loading}
-                  className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-emerald-400 to-cyan-400 text-black shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-shadow disabled:opacity-50 disabled:cursor-not-allowed touch-feedback"
+                  className="w-full py-5 rounded-2xl font-bold text-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white shadow-xl shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <span className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                      Creating...
+                    <span className="flex items-center justify-center gap-3">
+                      <span className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                      Creating Game...
                     </span>
                   ) : (
-                    '🎮 Create Game'
+                    <span className="flex items-center justify-center gap-2">
+                      <span className="text-2xl">🎮</span>
+                      Create Game
+                    </span>
                   )}
                 </motion.button>
 
                 {/* Divider */}
-                <div className="flex items-center gap-4">
-                  <div className="flex-1 h-px bg-white/20" />
-                  <span className="text-white/40 text-xs uppercase tracking-wider">or</span>
-                  <div className="flex-1 h-px bg-white/20" />
+                <div className="flex items-center gap-4 py-2">
+                  <div className="flex-1 h-px bg-gray-300 dark:bg-gray-700" />
+                  <span className="text-gray-500 dark:text-gray-400 text-sm font-semibold uppercase tracking-wider">or</span>
+                  <div className="flex-1 h-px bg-gray-300 dark:bg-gray-700" />
                 </div>
 
                 {/* Join Game Button */}
@@ -204,9 +215,12 @@ export function LobbyScreen() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setView('join')}
-                  className="w-full py-4 rounded-xl font-bold text-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all touch-feedback"
+                  className="w-full py-5 rounded-2xl font-bold text-xl bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white border-2 border-gray-300 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
                 >
-                  🔗 Join with Code
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="text-2xl">🔗</span>
+                    Join with Code
+                  </span>
                 </motion.button>
               </motion.div>
             ) : (
@@ -215,18 +229,20 @@ export function LobbyScreen() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="space-y-4"
+                className="space-y-6"
               >
                 {/* Room Code Input */}
-                <div className="space-y-2">
-                  <label className="text-white/70 text-sm font-medium">Room Code</label>
+                <div className="space-y-3">
+                  <label className="block text-gray-700 dark:text-gray-300 text-sm font-semibold uppercase tracking-wide">
+                    Room Code
+                  </label>
                   <input
                     type="text"
                     value={roomCode}
                     onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
-                    placeholder="Enter 6-character code..."
+                    placeholder="XXXXXX"
                     maxLength={6}
-                    className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition-all text-center text-xl sm:text-2xl font-mono tracking-[0.3em] uppercase touch-feedback"
+                    className="w-full px-6 py-5 rounded-2xl bg-gray-100 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-4 focus:ring-blue-500/20 transition-all text-center text-3xl font-mono font-bold tracking-[0.5em] uppercase"
                   />
                 </div>
 
@@ -236,22 +252,25 @@ export function LobbyScreen() {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleJoin}
                   disabled={loading}
-                  className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-blue-400 to-purple-400 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow disabled:opacity-50 touch-feedback"
+                  className="w-full py-5 rounded-2xl font-bold text-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-xl shadow-blue-500/30 hover:shadow-blue-500/50 transition-all disabled:opacity-50"
                 >
                   {loading ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span className="flex items-center justify-center gap-3">
+                      <span className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin" />
                       Joining...
                     </span>
                   ) : (
-                    '🚀 Join Game'
+                    <span className="flex items-center justify-center gap-2">
+                      <span className="text-2xl">🚀</span>
+                      Join Game
+                    </span>
                   )}
                 </motion.button>
 
                 {/* Back Button */}
                 <button
                   onClick={() => { setView('main'); setError(null); }}
-                  className="w-full py-3 text-white/50 hover:text-white/80 transition-colors text-sm touch-feedback"
+                  className="w-full py-4 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors text-base font-medium"
                 >
                   ← Back to menu
                 </button>
@@ -266,16 +285,16 @@ export function LobbyScreen() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="p-3 rounded-xl bg-red-500/20 border border-red-500/30 text-red-300 text-sm text-center"
+                className="p-4 rounded-2xl bg-red-100 dark:bg-red-500/20 border-2 border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-300 text-base font-medium text-center"
               >
-                {error}
+                ⚠️ {error}
               </motion.div>
             )}
           </AnimatePresence>
         </div>
 
         {/* Footer */}
-        <p className="text-center text-white/30 text-xs mt-4">
+        <p className="text-center text-gray-500 dark:text-gray-400 text-sm mt-6 font-medium">
           Built with Next.js, Three.js & Pusher
         </p>
       </motion.div>

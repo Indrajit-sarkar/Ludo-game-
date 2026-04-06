@@ -12,7 +12,7 @@ export function ThemeToggle() {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       onClick={toggleTheme}
-      className="fixed top-6 right-6 w-12 h-12 bg-white/10 dark:bg-black/30 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20 dark:border-gray-700 shadow-lg z-40 transition-colors hover:bg-white/20 dark:hover:bg-black/40"
+      className="fixed top-6 right-6 w-14 h-14 bg-white dark:bg-gray-800 backdrop-blur-xl rounded-full flex items-center justify-center border-2 border-gray-300 dark:border-gray-700 shadow-xl z-50 transition-all hover:shadow-2xl"
       aria-label="Toggle theme"
     >
       <AnimatePresence mode="wait">
@@ -24,7 +24,7 @@ export function ThemeToggle() {
             exit={{ rotate: 90, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <MoonIcon className="w-6 h-6 text-gray-300" />
+            <MoonIcon className="w-7 h-7 text-gray-700" />
           </motion.div>
         ) : (
           <motion.div
@@ -34,7 +34,7 @@ export function ThemeToggle() {
             exit={{ rotate: -90, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <SunIcon className="w-6 h-6 text-yellow-500" />
+            <SunIcon className="w-7 h-7 text-yellow-500" />
           </motion.div>
         )}
       </AnimatePresence>
