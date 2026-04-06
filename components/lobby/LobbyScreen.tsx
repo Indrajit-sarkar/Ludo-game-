@@ -1,16 +1,15 @@
 /**
- * Lobby Screen - Redesigned
+ * Lobby Screen - Redesigned to match reference
  * 
- * Modern landing page with color selection
+ * Modern landing page with dropdown color selection
  */
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useGameStore } from '@/hooks/useGameState';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { SoundToggle } from '@/components/ui/SoundToggle';
 import { PlayerColor } from '@/game-engine/types';
 import { COLOR_HEX } from '@/game-engine/constants';
@@ -28,6 +27,34 @@ export function LobbyScreen() {
   const [view, setView] = useState<'main' | 'join'>('main');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isDark, setIsDark] = useState(true);
+
+  // Initialize theme on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('ludo-theme');
+      const isLight = savedTheme === 'light' || document.documentElement.classList.contains('light');
+      setIsDark(!isLight);
+      if (isLight) {
+        document.documentElement.classList.add('light');
+      } else {
+        document.documentElement.classList.remove('light');
+      }
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const html = document.documentElement;
+    if (html.classList.contains('light')) {
+      html.classList.remove('light');
+      localStorage.setItem('ludo-theme', 'dark');
+      setIsDark(true);
+    } else {
+      html.classList.add('light');
+      localStorage.setItem('ludo-theme', 'light');
+      setIsDark(false);
+    }
+  };
 
   const handleCreate = async () => {
     if (!playerName.trim()) {
@@ -104,68 +131,80 @@ export function LobbyScreen() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-gradient-to-br from-indigo-950 via-purple-950 to-gray-900">
-      {/* Theme and Sound Toggles */}
-      <div className="fixed top-6 right-6 flex gap-3 z-50">
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background - Image for both themes */}
+      <div className="absolute inset-0 z-0">
+        {isDark ? (
+          <>
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/bg-dark.jpg)' }}
+            />
+            <div className="absolute inset-0 bg-black/50" />
+          </>
+        ) : (
+          <>
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/bg-light.jpg)' }}
+            />
+            <div className="absolute inset-0 bg-white/20" />
+          </>
+        )}
+      </div>
+
+      {/* Theme Toggle - Top Right */}
+      <div className="fixed top-6 right-6 z-50">
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={() => {
-            const html = document.documentElement;
-            if (html.classList.contains('light')) {
-              html.classList.remove('light');
-              localStorage.setItem('ludo-theme', 'dark');
-            } else {
-              html.classList.add('light');
-              localStorage.setItem('ludo-theme', 'light');
-            }
-          }}
-          className="w-12 h-12 bg-gray-800/80 backdrop-blur-xl rounded-full flex items-center justify-center border border-gray-700 shadow-xl transition-all hover:shadow-2xl"
+          onClick={toggleTheme}
+          className={`w-12 h-12 backdrop-blur-xl rounded-full flex items-center justify-center shadow-xl transition-all ${
+            isDark 
+              ? 'bg-gray-800/80 border border-gray-700' 
+              : 'bg-white/80 border border-gray-300'
+          }`}
           aria-label="Toggle theme"
         >
           <span className="text-xl">
-            {typeof window !== 'undefined' && document.documentElement.classList.contains('light') ? '☀️' : '🌙'}
+            {isDark ? '🌙' : '☀️'}
           </span>
         </motion.button>
-      </div>
-      
-      {/* Decorative Elements */}
-      <div className="absolute top-20 left-20 opacity-30">
-        <div className="w-24 h-24 rounded-full bg-purple-600 blur-xl animate-pulse" />
-      </div>
-      <div className="absolute bottom-20 right-20 opacity-30">
-        <div className="w-32 h-32 rounded-full bg-amber-600 blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="relative z-10 w-full max-w-xl"
+        className="relative z-10 w-full max-w-md"
       >
         {/* Main Card */}
-        <div className="bg-gradient-to-b from-gray-800/60 to-gray-900/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-700/30 p-6 sm:p-8 max-w-md mx-auto">
+        <div className={`backdrop-blur-2xl rounded-3xl shadow-2xl border p-8 transition-all ${
+          isDark 
+            ? 'bg-gray-900/70 border-gray-700/50' 
+            : 'bg-white/85 border-gray-200/50'
+        }`}>
           
           {/* Logo & Title */}
-          <div className="text-center mb-6">
+          <div className="text-center mb-8">
             <motion.div
               initial={{ scale: 0.5, rotate: -10 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: 'spring', bounce: 0.5 }}
-              className="inline-block mb-3"
+              className="inline-block mb-4"
             >
-              <div className="w-16 h-16 mx-auto bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/50">
-                <span className="text-3xl">🎲</span>
+              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/50 border-4 border-white/20">
+                <span className="text-4xl">🎲</span>
               </div>
             </motion.div>
             
-            <h1 className="text-3xl sm:text-4xl font-black mb-1">
-              <span className="text-white">LUDO </span>
-              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-black mb-2">
+              <span className={isDark ? 'text-white' : 'text-gray-900'}>LUDO </span>
+              <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
                 ARENA
               </span>
             </h1>
-            <p className="text-gray-400 text-xs">
+            <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
               The classic board game, reimagined in 3D
             </p>
           </div>
@@ -177,11 +216,11 @@ export function LobbyScreen() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
-                className="space-y-4"
+                className="space-y-5"
               >
                 {/* Name Input */}
-                <div className="space-y-1.5">
-                  <label className="block text-gray-400 text-xs font-medium uppercase tracking-wide">
+                <div className="space-y-2">
+                  <label className={`block text-xs font-semibold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
                     Your Name
                   </label>
                   <div className="relative">
@@ -191,10 +230,14 @@ export function LobbyScreen() {
                       onChange={(e) => setPlayerName(e.target.value)}
                       placeholder="Enter your name..."
                       maxLength={20}
-                      className="w-full px-3 py-2.5 bg-gray-900/50 border border-gray-700/50 rounded-lg text-white text-sm placeholder-gray-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 transition-all"
+                      className={`w-full px-4 py-3 border rounded-xl text-sm transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 ${
+                        isDark 
+                          ? 'bg-gray-800/50 border-gray-700 text-white placeholder-gray-500' 
+                          : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
+                      }`}
                     />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className={`absolute right-3 top-1/2 -translate-y-1/2 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
                     </div>
@@ -202,59 +245,65 @@ export function LobbyScreen() {
                 </div>
 
                 {/* Game Mode */}
-                <div className="space-y-1.5">
-                  <label className="block text-gray-400 text-xs font-medium uppercase tracking-wide">
+                <div className="space-y-2">
+                  <label className={`block text-xs font-semibold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
                     Game Mode
                   </label>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-3">
                     {(['2-player', '4-player'] as const).map((m) => (
                       <button
                         key={m}
                         onClick={() => setMode(m)}
-                        className={`relative py-3 px-3 rounded-lg font-medium text-sm transition-all ${
+                        className={`relative py-4 px-4 rounded-xl font-semibold text-sm transition-all ${
                           mode === m
-                            ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/30'
-                            : 'bg-gray-800/50 text-gray-400 border border-gray-700/50 hover:border-gray-600'
+                            ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/40 border-2 border-indigo-400'
+                            : isDark
+                            ? 'bg-gray-800/50 text-gray-400 border-2 border-gray-700 hover:border-gray-600'
+                            : 'bg-gray-100 text-gray-600 border-2 border-gray-300 hover:border-gray-400'
                         }`}
                       >
-                        <div className="flex flex-col items-center gap-0.5">
-                          <span className="text-lg">{m === '2-player' ? '👥' : '👥👥'}</span>
-                          <span className="text-xs">{m === '2-player' ? '2 Players' : '4 Players'}</span>
-                          <span className="text-[10px] opacity-60">{m === '2-player' ? 'Fast-paced' : 'Free for All'}</span>
+                        <div className="flex flex-col items-center gap-1">
+                          <span className="text-2xl">{m === '2-player' ? '👥' : '👥👥'}</span>
+                          <span>{m === '2-player' ? '2 Players' : '4 Players'}</span>
+                          <span className="text-[10px] opacity-70">{m === '2-player' ? 'Fast-paced' : 'Free for All'}</span>
                         </div>
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* Color Selection */}
-                <div className="space-y-1.5">
-                  <label className="block text-gray-400 text-xs font-medium uppercase tracking-wide">
-                    Choose Your Color (Optional)
+                {/* Color Dropdown */}
+                <div className="space-y-2">
+                  <label className={`block text-xs font-semibold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
+                    Choose Color (Optional)
                   </label>
-                  <div className="grid grid-cols-4 gap-2">
+                  <select
+                    value={selectedColor || ''}
+                    onChange={(e) => setSelectedColor(e.target.value as PlayerColor || null)}
+                    className={`w-full px-4 py-3 border rounded-xl text-sm transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 ${
+                      isDark 
+                        ? 'bg-gray-800/50 border-gray-700 text-white' 
+                        : 'bg-white border-gray-300 text-gray-900'
+                    }`}
+                  >
+                    <option value="">Random Color</option>
                     {COLORS.map((color) => (
-                      <button
-                        key={color}
-                        onClick={() => setSelectedColor(selectedColor === color ? null : color)}
-                        className={`relative h-12 rounded-lg transition-all ${
-                          selectedColor === color
-                            ? 'ring-2 ring-white scale-105 shadow-lg'
-                            : 'hover:scale-105 opacity-80 hover:opacity-100'
-                        }`}
-                        style={{ backgroundColor: COLOR_HEX[color] }}
-                      >
-                        {selectedColor === color && (
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-xl text-white drop-shadow-lg">✓</span>
-                          </div>
-                        )}
-                      </button>
+                      <option key={color} value={color}>
+                        {color.charAt(0).toUpperCase() + color.slice(1)}
+                      </option>
                     ))}
-                  </div>
-                  <p className="text-[10px] text-gray-600 text-center">
-                    {selectedColor ? `Selected: ${selectedColor}` : 'Random color if not selected'}
-                  </p>
+                  </select>
+                  {selectedColor && (
+                    <div className="flex items-center gap-2 mt-2">
+                      <div 
+                        className="w-6 h-6 rounded-md shadow-md"
+                        style={{ backgroundColor: COLOR_HEX[selectedColor] }}
+                      />
+                      <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Selected: {selectedColor.charAt(0).toUpperCase() + selectedColor.slice(1)}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Create Game Button */}
@@ -263,11 +312,11 @@ export function LobbyScreen() {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleCreate}
                   disabled={loading}
-                  className="w-full py-3 rounded-lg font-bold text-base bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 rounded-xl font-bold text-base bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white shadow-lg shadow-purple-500/40 hover:shadow-purple-500/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-6"
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
-                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       Creating...
                     </span>
                   ) : (
@@ -281,7 +330,11 @@ export function LobbyScreen() {
                 {/* Join with Code */}
                 <button
                   onClick={() => setView('join')}
-                  className="w-full py-2.5 rounded-lg font-medium text-sm text-gray-400 hover:text-white hover:bg-gray-800/50 transition-all border border-gray-700/50 hover:border-gray-600"
+                  className={`w-full py-3 rounded-xl font-medium text-sm transition-all border-2 ${
+                    isDark
+                      ? 'text-gray-400 hover:text-white hover:bg-gray-800/50 border-gray-700 hover:border-gray-600'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 border-gray-300 hover:border-gray-400'
+                  }`}
                 >
                   <span className="flex items-center justify-center gap-2">
                     <span>🔗</span>
@@ -295,11 +348,11 @@ export function LobbyScreen() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
+                className="space-y-5"
               >
                 {/* Name Input */}
                 <div className="space-y-2">
-                  <label className="block text-gray-300 text-xs font-semibold uppercase tracking-wide">
+                  <label className={`block text-xs font-semibold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
                     Your Name
                   </label>
                   <input
@@ -308,13 +361,17 @@ export function LobbyScreen() {
                     onChange={(e) => setPlayerName(e.target.value)}
                     placeholder="Enter your name..."
                     maxLength={20}
-                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                    className={`w-full px-4 py-3 border rounded-xl transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 ${
+                      isDark
+                        ? 'bg-gray-800/50 border-gray-700 text-white placeholder-gray-500'
+                        : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
+                    }`}
                   />
                 </div>
 
                 {/* Room Code Input */}
                 <div className="space-y-2">
-                  <label className="block text-gray-300 text-xs font-semibold uppercase tracking-wide">
+                  <label className={`block text-xs font-semibold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
                     Room Code
                   </label>
                   <input
@@ -323,35 +380,35 @@ export function LobbyScreen() {
                     onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                     placeholder="XXXXXX"
                     maxLength={6}
-                    className="w-full px-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all text-center text-2xl font-mono font-bold tracking-[0.5em] uppercase"
+                    className={`w-full px-4 py-4 border rounded-xl transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 text-center text-2xl font-mono font-bold tracking-[0.5em] uppercase ${
+                      isDark
+                        ? 'bg-gray-800/50 border-gray-700 text-white placeholder-gray-500'
+                        : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
+                    }`}
                   />
                 </div>
 
-                {/* Color Selection */}
+                {/* Color Dropdown */}
                 <div className="space-y-2">
-                  <label className="block text-gray-300 text-xs font-semibold uppercase tracking-wide">
-                    Choose Your Color (Optional)
+                  <label className={`block text-xs font-semibold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
+                    Choose Color (Optional)
                   </label>
-                  <div className="grid grid-cols-4 gap-2">
+                  <select
+                    value={selectedColor || ''}
+                    onChange={(e) => setSelectedColor(e.target.value as PlayerColor || null)}
+                    className={`w-full px-4 py-3 border rounded-xl text-sm transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 ${
+                      isDark 
+                        ? 'bg-gray-800/50 border-gray-700 text-white' 
+                        : 'bg-white border-gray-300 text-gray-900'
+                    }`}
+                  >
+                    <option value="">Random Color</option>
                     {COLORS.map((color) => (
-                      <button
-                        key={color}
-                        onClick={() => setSelectedColor(selectedColor === color ? null : color)}
-                        className={`relative h-16 rounded-xl transition-all ${
-                          selectedColor === color
-                            ? 'ring-4 ring-white scale-105 shadow-lg'
-                            : 'hover:scale-105 opacity-70 hover:opacity-100'
-                        }`}
-                        style={{ backgroundColor: COLOR_HEX[color] }}
-                      >
-                        {selectedColor === color && (
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-2xl text-white drop-shadow-lg">✓</span>
-                          </div>
-                        )}
-                      </button>
+                      <option key={color} value={color}>
+                        {color.charAt(0).toUpperCase() + color.slice(1)}
+                      </option>
                     ))}
-                  </div>
+                  </select>
                 </div>
 
                 {/* Join Button */}
@@ -360,10 +417,10 @@ export function LobbyScreen() {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleJoin}
                   disabled={loading}
-                  className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-xl shadow-blue-500/30 hover:shadow-blue-500/50 transition-all disabled:opacity-50"
+                  className="w-full py-4 rounded-xl font-bold text-base bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/40 hover:shadow-blue-500/60 transition-all disabled:opacity-50 mt-6"
                 >
                   {loading ? (
-                    <span className="flex items-center justify-center gap-3">
+                    <span className="flex items-center justify-center gap-2">
                       <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       Joining...
                     </span>
@@ -378,7 +435,9 @@ export function LobbyScreen() {
                 {/* Back Button */}
                 <button
                   onClick={() => { setView('main'); setError(null); }}
-                  className="w-full py-3 text-gray-400 hover:text-white transition-colors text-sm"
+                  className={`w-full py-3 transition-colors text-sm ${
+                    isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                  }`}
                 >
                   ← Back to menu
                 </button>
@@ -401,7 +460,7 @@ export function LobbyScreen() {
           </AnimatePresence>
 
           {/* Footer */}
-          <p className="text-center text-gray-600 text-[10px] mt-4">
+          <p className={`text-center text-[10px] mt-6 ${isDark ? 'text-gray-600' : 'text-gray-500'}`}>
             Built with Next.js, Three.js & Pusher
           </p>
         </div>
