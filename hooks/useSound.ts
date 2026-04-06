@@ -9,7 +9,7 @@
 
 import { useCallback, useRef } from 'react';
 
-type SoundType = 'dice' | 'move' | 'capture' | 'home' | 'win' | 'click' | 'turn';
+type SoundType = 'dice' | 'move' | 'capture' | 'home' | 'win' | 'click' | 'turn' | 'notification';
 
 // Frequencies and durations for synthesized sounds
 const SOUND_CONFIG: Record<SoundType, { frequencies: number[]; duration: number; type: OscillatorType }> = {
@@ -20,6 +20,7 @@ const SOUND_CONFIG: Record<SoundType, { frequencies: number[]; duration: number;
   win: { frequencies: [523, 659, 784, 880, 1047], duration: 0.25, type: 'sine' },
   click: { frequencies: [800], duration: 0.05, type: 'sine' },
   turn: { frequencies: [440, 520], duration: 0.1, type: 'triangle' },
+  notification: { frequencies: [1000, 1200], duration: 0.12, type: 'sine' },
 };
 
 export function useSound() {
@@ -71,5 +72,12 @@ export function useSound() {
     return enabledRef.current;
   }, []);
 
-  return { playSound, toggleSound, isEnabled: () => enabledRef.current };
+  const playNotification = useCallback(() => playSound('notification'), [playSound]);
+
+  return { 
+    playSound, 
+    playNotification,
+    toggleSound, 
+    isEnabled: () => enabledRef.current 
+  };
 }

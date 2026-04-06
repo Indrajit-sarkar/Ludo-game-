@@ -8,7 +8,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { getRoom, updateRoomState } from '@/lib/room-store';
+import { getRoom, updateRoomState } from '@/lib/room-store-upstash';
 import { processDiceRoll } from '@/game-engine/engine';
 import { validateDiceRoll } from '@/game-engine/validation';
 import { broadcastGameState } from '@/lib/pusher-server';

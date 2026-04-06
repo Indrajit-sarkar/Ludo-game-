@@ -6,7 +6,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { getRoom } from '@/lib/room-store';
+import { getRoom } from '@/lib/room-store-upstash';
 
 export async function GET(request: Request) {
   try {
@@ -20,7 +20,10 @@ export async function GET(request: Request) {
       );
     }
 
-    const room = getRoom(roomId);
+    // Normalize room ID to uppercase
+    const normalizedRoomId = roomId.trim().toUpperCase();
+
+    const room = getRoom(normalizedRoomId);
     if (!room) {
       return NextResponse.json(
         { error: 'Room not found' },

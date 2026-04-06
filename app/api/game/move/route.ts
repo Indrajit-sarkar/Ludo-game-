@@ -7,7 +7,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { getRoom, updateRoomState } from '@/lib/room-store';
+import { getRoom, updateRoomState } from '@/lib/room-store-upstash';
 import { executeMove } from '@/game-engine/engine';
 import { validateMove } from '@/game-engine/validation';
 import { broadcastGameState } from '@/lib/pusher-server';

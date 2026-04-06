@@ -10,6 +10,11 @@
   --bg-secondary: #121225;
 }
 
+:root.light {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -21,6 +26,40 @@ body {
   background: var(--bg-primary);
   color: #ffffff;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+:root.light body {
+  color: #000000;
+}
+
+/* ─── Responsive Design ───────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1025px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Support for all aspect ratios */
+@supports (aspect-ratio: 1) {
+  .aspect-square {
+    aspect-ratio: 1;
+  }
+  .aspect-video {
+    aspect-ratio: 16 / 9;
+  }
 }
 
 /* ─── Scrollbar ───────────────────────────────────────────────────────────── */
@@ -115,4 +154,161 @@ canvas {
 .r3f-canvas-container canvas {
   width: 100% !important;
   height: 100% !important;
+}
+
+/* ─── Touch & Swipe Effects ───────────────────────────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+  button, a, [role="button"] {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    touch-action: manipulation;
+  }
+}
+
+.touch-feedback:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}
+
+/* ─── Smooth Animations ───────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Browser Compatibility ───────────────────────────────────────────────── */
+/* Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Firefox specific fixes */
+@-moz-document url-prefix() {
+  body {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+  }
+}
+
+/* Edge specific fixes */
+@supports (-ms-ime-align: auto) {
+  body {
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+}
+
+/* ─── Hover Effects ───────────────────────────────────────────────────────── */
+@media (hover: hover) {
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 20px currentColor;
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+}
+
+/* ─── Custom Cursor Effects ───────────────────────────────────────────────── */
+@media (pointer: fine) {
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .cursor-grab {
+    cursor: grab;
+  }
+
+  .cursor-grab:active {
+    cursor: grabbing;
+  }
+}
+
+/* ─── Light Mode Overrides ────────────────────────────────────────────────── */
+:root.light .bg-noise::after {
+  opacity: 0.05;
+}
+
+:root.light .glass {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* ─── Notification Animation ──────────────────────────────────────────────── */
+@keyframes notification-slide {
+  0% {
+    transform: translateY(-100%) scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.notification-enter {
+  animation: notification-slide 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ─── Pulse Animation ─────────────────────────────────────────────────────── */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.pulse-ring {
+  animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+/* ─── Shimmer Effect ──────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+:root.light .shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.05) 50%,
+    transparent 100%
+  );
 }

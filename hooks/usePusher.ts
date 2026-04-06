@@ -72,6 +72,22 @@ export function usePusher(roomId: string | null) {
       }
     });
 
+    // Chat message event
+    channel.bind('chat-message', (data: any) => {
+      // Import chat store dynamically to avoid circular dependency
+      import('./useChat').then(({ useChatStore }) => {
+        const { addMessage } = useChatStore.getState();
+        addMessage(data);
+      });
+    });
+
+    // Turn skipped event
+    channel.bind('turn-skipped', (data: { state: unknown }) => {
+      if (data.state) {
+        updateGameState(data.state as ReturnType<typeof useGameStore.getState>['gameState'] & object);
+      }
+    });
+
     // Presence events
     channel.bind('pusher:subscription_succeeded', () => {
       console.log(`✅ Connected to room ${roomId}`);

@@ -14,13 +14,50 @@ import { getColorEmoji } from '@/lib/utils';
 interface PlayerPanelProps {
   player: Player;
   isCurrentTurn: boolean;
+  compact?: boolean;
 }
 
-export function PlayerPanel({ player, isCurrentTurn }: PlayerPanelProps) {
+export function PlayerPanel({ player, isCurrentTurn, compact = false }: PlayerPanelProps) {
   const color = COLOR_HEX[player.color];
   const tokensInYard = player.tokens.filter(t => t.isInYard).length;
   const tokensOnBoard = player.tokens.filter(t => !t.isInYard && !t.isFinished).length;
   const tokensFinished = player.finishedTokens;
+
+  if (compact) {
+    return (
+      <motion.div
+        animate={{
+          borderColor: isCurrentTurn ? color : 'rgba(255,255,255,0.1)',
+          scale: isCurrentTurn ? 1.05 : 1,
+        }}
+        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        className="backdrop-blur-md bg-black/40 dark:bg-black/40 light:bg-white/80 rounded-xl border-2 p-2 flex flex-col items-center gap-1 min-w-[70px]"
+        style={{ boxShadow: isCurrentTurn ? `0 0 15px ${color}40` : 'none' }}
+      >
+        <div
+          className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+          style={{ backgroundColor: color + '40', color }}
+        >
+          {player.name[0].toUpperCase()}
+        </div>
+        <p className="text-white dark:text-white light:text-gray-900 text-[10px] font-semibold truncate max-w-full px-1">
+          {player.name}
+        </p>
+        <div className="flex gap-0.5">
+          {player.tokens.map(token => (
+            <div
+              key={token.id}
+              className="w-3 h-3 rounded-full border"
+              style={{
+                borderColor: color,
+                backgroundColor: token.isFinished ? color : token.isInYard ? 'transparent' : color + '60',
+              }}
+            />
+          ))}
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
@@ -29,7 +66,7 @@ export function PlayerPanel({ player, isCurrentTurn }: PlayerPanelProps) {
         scale: isCurrentTurn ? 1.05 : 1,
       }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className="w-44 backdrop-blur-md bg-black/40 rounded-2xl border-2 p-3 space-y-2"
+      className="w-44 backdrop-blur-md bg-black/40 dark:bg-black/40 light:bg-white/80 rounded-2xl border-2 p-3 space-y-2"
       style={{ boxShadow: isCurrentTurn ? `0 0 20px ${color}40` : 'none' }}
     >
       {/* Player Header */}
@@ -41,7 +78,7 @@ export function PlayerPanel({ player, isCurrentTurn }: PlayerPanelProps) {
           {player.name[0].toUpperCase()}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-white text-sm font-semibold truncate">{player.name}</p>
+          <p className="text-white dark:text-white light:text-gray-900 text-sm font-semibold truncate">{player.name}</p>
           <p className="text-xs" style={{ color: color }}>
             {getColorEmoji(player.color)} {player.color}
           </p>
@@ -57,11 +94,11 @@ export function PlayerPanel({ player, isCurrentTurn }: PlayerPanelProps) {
       </div>
 
       {/* Token Status */}
-      <div className="flex items-center gap-1.5 text-xs text-white/50">
+      <div className="flex items-center gap-1.5 text-xs text-white/50 dark:text-white/50 light:text-gray-600">
         <span title="In yard">🏠 {tokensInYard}</span>
-        <span className="text-white/20">•</span>
+        <span className="text-white/20 dark:text-white/20 light:text-gray-400">•</span>
         <span title="On board">🎯 {tokensOnBoard}</span>
-        <span className="text-white/20">•</span>
+        <span className="text-white/20 dark:text-white/20 light:text-gray-400">•</span>
         <span title="Finished">🏆 {tokensFinished}</span>
       </div>
 

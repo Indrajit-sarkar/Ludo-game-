@@ -6,7 +6,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { getRoom, updateRoomState } from '@/lib/room-store';
+import { getRoom, updateRoomState } from '@/lib/room-store-upstash';
 import { addPlayer } from '@/game-engine/engine';
 import { broadcastGameState } from '@/lib/pusher-server';
 import { generatePlayerId } from '@/lib/utils';
@@ -24,7 +24,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const room = getRoom(roomId);
+    // Normalize room ID to uppercase
+    const normalizedRoomId = roomId.trim().toUpperCase();
+
+    const room = getRoom(normalizedRoomId);
     if (!room) {
       return NextResponse.json(
         { error: 'Room not found. Check the code and try again.' },
@@ -51,10 +54,10 @@ export async function POST(request: Request) {
 
     // Add the player
     const updatedState = addPlayer(room.state, playerId, playerName.trim(), false);
-    updateRoomState(roomId, updatedState);
+    updateRoomState(normalizedRoomId, updatedState);
 
     // Broadcast to all clients in the room
-    await broadcastGameState(roomId, 'player-joined', updatedState, {
+    await broadcastGameState(normalizedRoomId, 'player-joined', updatedState, {
       playerName: playerName.trim(),
       playerId,
     });

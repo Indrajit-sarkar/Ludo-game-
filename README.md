@@ -2,10 +2,21 @@
 
 A production-ready multiplayer Ludo game built with **Next.js 16**, **React Three Fiber**, **Pusher**, and **Tailwind CSS v4**.
 
+> **🎉 NEW in v2.0**: Dark/Light themes, Real-time chat, Game timers, Scoreboard, Full responsive design, and more! See [UPGRADE_SUMMARY.md](./UPGRADE_SUMMARY.md) for details.
+
 ---
 
 ## ✨ Features
 
+### v2.0 Features
+- 🌓 **Dark/Light Theme** — Toggle between themes with smooth transitions
+- 💬 **Real-Time Chat** — Message other players with emoji support
+- ⏱️ **Timer System** — Game timer and 15-second turn countdown
+- 🏆 **Scoreboard** — Rankings with medals and statistics
+- 📱 **Fully Responsive** — Optimized for all devices and browsers
+- 🎨 **Enhanced UI/UX** — Hover effects, touch feedback, animations
+
+### Core Features
 - 🎮 **3D Game Board** — Procedurally generated using React Three Fiber
 - 🎲 **Animated Dice** — 3D spinning dice with dot textures
 - ♟️ **Animated Tokens** — Smooth movement, bounce, glow effects
@@ -15,7 +26,6 @@ A production-ready multiplayer Ludo game built with **Next.js 16**, **React Thre
 - 🎯 **Cryptographic Dice** — `crypto.getRandomValues()` + rejection sampling
 - 📋 **Full Ludo Rules** — Captures, safe zones, home paths, exact-roll finish
 - 🔊 **Sound Effects** — Synthesized via Web Audio API
-- 📱 **Responsive** — Desktop + mobile
 - 💎 **Glassmorphism UI** — Modern premium design with Framer Motion
 
 ---
