@@ -132,25 +132,13 @@ export function LobbyScreen() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background - Image for both themes */}
+      {/* Background - Same image for both themes */}
       <div className="absolute inset-0 z-0">
-        {isDark ? (
-          <>
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: 'url(/bg-dark.jpg)' }}
-            />
-            <div className="absolute inset-0 bg-black/50" />
-          </>
-        ) : (
-          <>
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: 'url(/bg-light.jpg)' }}
-            />
-            <div className="absolute inset-0 bg-white/20" />
-          </>
-        )}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/bg-dark.jpg)' }}
+        />
+        <div className={`absolute inset-0 ${isDark ? 'bg-black/50' : 'bg-purple-400/30'}`} />
       </div>
 
       {/* Theme Toggle - Top Right */}
@@ -176,35 +164,35 @@ export function LobbyScreen() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="relative z-10 w-full max-w-lg"
+        className="relative z-10 w-full max-w-xl"
       >
         {/* Main Card */}
-        <div className={`backdrop-blur-2xl rounded-3xl shadow-2xl border p-10 transition-all ${
+        <div className={`backdrop-blur-2xl rounded-3xl shadow-2xl border p-8 transition-all ${
           isDark 
-            ? 'bg-gray-900/70 border-gray-700/50' 
-            : 'bg-white/85 border-gray-200/50'
+            ? 'bg-gray-900/90 border-gray-700/50' 
+            : 'bg-white/95 border-gray-200/50'
         }`}>
           
           {/* Logo & Title */}
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <motion.div
               initial={{ scale: 0.5, rotate: -10 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: 'spring', bounce: 0.5 }}
-              className="inline-block mb-5"
+              className="inline-block mb-4"
             >
-              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/50 border-4 border-white/20">
-                <span className="text-5xl">🎲</span>
+              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/50 border-4 border-white/20">
+                <span className="text-4xl">🎲</span>
               </div>
             </motion.div>
             
-            <h1 className="text-5xl font-black mb-3">
+            <h1 className="text-4xl font-black mb-2">
               <span className={isDark ? 'text-white' : 'text-gray-900'}>LUDO </span>
               <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
                 ARENA
               </span>
             </h1>
-            <p className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
               The classic board game, reimagined in 3D
             </p>
           </div>
@@ -265,7 +253,7 @@ export function LobbyScreen() {
                         <div className="flex flex-col items-center gap-2">
                           <span className="text-3xl">{m === '2-player' ? '👥' : '👥👥'}</span>
                           <span>{m === '2-player' ? '2 Players' : '4 Players'}</span>
-                          <span className="text-xs opacity-70">{m === '2-player' ? 'Fast-paced' : 'Free for All'}</span>
+                          <span className="text-xs opacity-70">{m === '2-player' ? 'Classic Duel' : 'Free for All'}</span>
                         </div>
                       </button>
                     ))}
@@ -330,16 +318,21 @@ export function LobbyScreen() {
                 {/* Join with Code */}
                 <button
                   onClick={() => setView('join')}
-                  className={`w-full py-4 rounded-xl font-medium text-base transition-all border-2 ${
+                  className={`w-full py-4 rounded-xl font-medium text-sm transition-all border-2 ${
                     isDark
                       ? 'text-gray-400 hover:text-white hover:bg-gray-800/50 border-gray-700 hover:border-gray-600'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 border-gray-300 hover:border-gray-400'
                   }`}
                 >
-                  <span className="flex items-center justify-center gap-2">
-                    <span>🔗</span>
-                    Join with Code
-                  </span>
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="flex items-center gap-2 font-semibold">
+                      <span>🔗</span>
+                      Join with Code
+                    </span>
+                    <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                      Enter a room code to join a game
+                    </span>
+                  </div>
                 </button>
               </motion.div>
             ) : (
