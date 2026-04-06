@@ -48,14 +48,19 @@ export async function broadcastGameState(
   extra?: Record<string, unknown>
 ) {
   const pusher = getPusherServer();
+  const channelName = `presence-room-${roomId}`;
+  
+  console.log(`[Pusher] Broadcasting ${eventType} to ${channelName}`);
+  
   try {
-    await pusher.trigger(`presence-room-${roomId}`, eventType, {
+    await pusher.trigger(channelName, eventType, {
       type: eventType,
       state,
       extra,
       timestamp: Date.now(),
     });
+    console.log(`[Pusher] ✅ Broadcast successful`);
   } catch (error) {
-    console.error('Failed to broadcast:', error);
+    console.error('[Pusher] ❌ Failed to broadcast:', error);
   }
 }

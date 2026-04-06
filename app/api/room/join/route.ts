@@ -43,6 +43,18 @@ export async function POST(request: Request) {
     }
 
     const maxPlayers = room.state.mode === '2-player' ? 2 : 4;
+    
+    // Check if player is already in the room (by name)
+    const existingPlayer = room.state.players.find(p => p.name.toLowerCase() === playerName.trim().toLowerCase());
+    
+    if (existingPlayer) {
+      // Player is rejoining - return their existing player ID
+      return NextResponse.json({
+        playerId: existingPlayer.id,
+        state: room.state,
+      });
+    }
+    
     if (room.state.players.length >= maxPlayers) {
       return NextResponse.json(
         { error: 'Room is full' },

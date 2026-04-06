@@ -38,6 +38,25 @@ export default function RoomPage({ params }: PageProps) {
   // Subscribe to Pusher events for this room
   usePusher(roomId);
 
+  // Poll for room state updates every 3 seconds as fallback
+  useEffect(() => {
+    if (!roomId || !playerId) return;
+
+    const pollInterval = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/room/state?roomId=${roomId}`);
+        const data = await res.json();
+        if (data.state) {
+          updateGameState(data.state);
+        }
+      } catch (err) {
+        console.error('Failed to poll room state:', err);
+      }
+    }, 3000); // Poll every 3 seconds
+
+    return () => clearInterval(pollInterval);
+  }, [roomId, playerId, updateGameState]);
+
   // Check if player is already connected to this room
   useEffect(() => {
     if (storeRoomId === roomId && playerId) {

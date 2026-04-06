@@ -47,7 +47,32 @@ export function WaitingRoom() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
+      {/* Theme Toggle */}
+      <div className="fixed top-6 right-6 z-50">
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => {
+            const html = document.documentElement;
+            const currentTheme = html.classList.contains('light') ? 'dark' : 'light';
+            if (currentTheme === 'light') {
+              html.classList.add('light');
+              localStorage.setItem('ludo-theme', 'light');
+            } else {
+              html.classList.remove('light');
+              localStorage.setItem('ludo-theme', 'dark');
+            }
+          }}
+          className="w-14 h-14 bg-white dark:bg-gray-800 backdrop-blur-xl rounded-full flex items-center justify-center border-2 border-gray-300 dark:border-gray-700 shadow-xl transition-all hover:shadow-2xl"
+          aria-label="Toggle theme"
+        >
+          <span className="text-2xl">
+            {typeof window !== 'undefined' && document.documentElement.classList.contains('light') ? '☀️' : '🌙'}
+          </span>
+        </motion.button>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
