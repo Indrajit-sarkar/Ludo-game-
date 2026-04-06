@@ -242,6 +242,15 @@ canvas {
 }
 
 /* ─── Light Mode Overrides ────────────────────────────────────────────────── */
+:root.light {
+  background: var(--bg-primary);
+}
+
+:root.light body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
 :root.light .bg-noise::after {
   opacity: 0.05;
 }
@@ -249,6 +258,25 @@ canvas {
 :root.light .glass {
   background: rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Light mode specific backgrounds */
+:root.light main {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+:root.light .backdrop-blur-xl {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+:root.light input,
+:root.light button {
+  color: var(--text-primary);
+}
+
+:root.light input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
 }
 
 /* ─── Notification Animation ──────────────────────────────────────────────── */
