@@ -168,7 +168,7 @@ export function LobbyScreen() {
         }`}>
           
           {/* Logo & Title - Dice above title */}
-          <div className="text-center mb-6">
+          <div className="text-center mb-10">
             <motion.div
               initial={{ scale: 0.5, rotate: -10 }}
               animate={{ scale: 1, rotate: 0 }}
@@ -198,7 +198,7 @@ export function LobbyScreen() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
-                className="space-y-5"
+                className="space-y-8"
               >
                 {/* Name Input */}
                 <div className="space-y-2">
@@ -283,7 +283,7 @@ export function LobbyScreen() {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleCreate}
                   disabled={loading}
-                  className="w-full py-3.5 rounded-xl font-bold text-base bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white shadow-lg shadow-purple-500/40 hover:shadow-purple-500/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+                  className="w-full py-3.5 rounded-xl font-bold text-base bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white shadow-lg shadow-purple-500/40 hover:shadow-purple-500/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-6"
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
@@ -324,7 +324,7 @@ export function LobbyScreen() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="space-y-5"
+                className="space-y-8"
               >
                 {/* Name Input */}
                 <div className="space-y-2">
@@ -393,7 +393,7 @@ export function LobbyScreen() {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleJoin}
                   disabled={loading}
-                  className="w-full py-3.5 rounded-xl font-bold text-base bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/40 hover:shadow-blue-500/60 transition-all disabled:opacity-50 mt-2"
+                  className="w-full py-3.5 rounded-xl font-bold text-base bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/40 hover:shadow-blue-500/60 transition-all disabled:opacity-50 mt-6"
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
