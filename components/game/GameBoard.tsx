@@ -142,7 +142,7 @@ export function GameBoard() {
   const mustSelectToken = isMyTurn && gameState.phase === 'moving';
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden bg-gray-100 dark:bg-gray-900">
       <ThemeToggle />
       <GameTimer />
       <TurnTimer />
@@ -154,7 +154,7 @@ export function GameBoard() {
       <div
         className="absolute inset-0 transition-colors duration-1000"
         style={{
-          background: `radial-gradient(ellipse at center, ${COLOR_HEX[currentPlayerColor]}15 0%, var(--bg-primary) 70%)`,
+          background: `radial-gradient(ellipse at center, ${COLOR_HEX[currentPlayerColor]}20 0%, transparent 70%)`,
         }}
       />
 
@@ -203,7 +203,7 @@ export function GameBoard() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="px-4 sm:px-6 py-2 sm:py-3 rounded-2xl backdrop-blur-md bg-white/10 dark:bg-white/10 light:bg-black/10 border border-white/20 dark:border-white/20 light:border-gray-300 text-white dark:text-white light:text-gray-900 text-xs sm:text-sm font-medium"
+                className="px-4 sm:px-6 py-2 sm:py-3 rounded-2xl backdrop-blur-md bg-white dark:bg-white/10 border-2 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white text-xs sm:text-sm font-semibold shadow-xl"
               >
                 🎯 Click a glowing token to move it! (Rolled: {gameState.diceValue})
               </motion.div>
@@ -224,7 +224,7 @@ export function GameBoard() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-white/40 dark:text-white/40 light:text-gray-600 text-xs sm:text-sm"
+              className="text-gray-600 dark:text-white/40 text-xs sm:text-sm font-medium"
             >
               Waiting for {gameState.currentTurn} player&apos;s turn...
             </motion.p>
