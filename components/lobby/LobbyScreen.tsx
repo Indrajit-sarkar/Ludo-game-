@@ -164,35 +164,35 @@ export function LobbyScreen() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="relative z-10 w-full max-w-xl"
+        className="relative z-10 w-full max-w-4xl"
       >
-        {/* Main Card */}
-        <div className={`backdrop-blur-2xl rounded-3xl shadow-2xl border p-8 transition-all ${
+        {/* Main Card - Wider horizontal layout */}
+        <div className={`backdrop-blur-2xl rounded-3xl shadow-2xl border px-12 py-10 transition-all ${
           isDark 
             ? 'bg-gray-900/90 border-gray-700/50' 
             : 'bg-white/95 border-gray-200/50'
         }`}>
           
           {/* Logo & Title */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-10">
             <motion.div
               initial={{ scale: 0.5, rotate: -10 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: 'spring', bounce: 0.5 }}
               className="inline-block mb-4"
             >
-              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/50 border-4 border-white/20">
-                <span className="text-4xl">🎲</span>
+              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-purple-500 to-indigo-600 rounded-3xl flex items-center justify-center shadow-lg shadow-purple-500/50 border-4 border-white/20">
+                <span className="text-5xl">🎲</span>
               </div>
             </motion.div>
             
-            <h1 className="text-4xl font-black mb-2">
+            <h1 className="text-5xl font-black mb-3">
               <span className={isDark ? 'text-white' : 'text-gray-900'}>LUDO </span>
               <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
                 ARENA
               </span>
             </h1>
-            <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            <p className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
               The classic board game, reimagined in 3D
             </p>
           </div>
@@ -207,8 +207,8 @@ export function LobbyScreen() {
                 className="space-y-6"
               >
                 {/* Name Input */}
-                <div className="space-y-3">
-                  <label className={`block text-sm font-semibold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
+                <div className="space-y-2">
+                  <label className={`block text-sm font-bold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
                     Your Name
                   </label>
                   <div className="relative">
@@ -218,13 +218,13 @@ export function LobbyScreen() {
                       onChange={(e) => setPlayerName(e.target.value)}
                       placeholder="Enter your name..."
                       maxLength={20}
-                      className={`w-full px-5 py-4 border rounded-xl text-base transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 ${
+                      className={`w-full px-5 py-4 border-2 rounded-2xl text-base transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 ${
                         isDark 
                           ? 'bg-gray-800/50 border-gray-700 text-white placeholder-gray-500' 
                           : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
                       }`}
                     />
-                    <div className={`absolute right-4 top-1/2 -translate-y-1/2 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                    <div className={`absolute right-5 top-1/2 -translate-y-1/2 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
@@ -233,8 +233,8 @@ export function LobbyScreen() {
                 </div>
 
                 {/* Game Mode */}
-                <div className="space-y-3">
-                  <label className={`block text-sm font-semibold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
+                <div className="space-y-2">
+                  <label className={`block text-sm font-bold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
                     Game Mode
                   </label>
                   <div className="grid grid-cols-2 gap-4">
@@ -242,7 +242,7 @@ export function LobbyScreen() {
                       <button
                         key={m}
                         onClick={() => setMode(m)}
-                        className={`relative py-5 px-4 rounded-xl font-semibold text-base transition-all ${
+                        className={`relative py-6 px-6 rounded-2xl font-bold text-lg transition-all ${
                           mode === m
                             ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/40 border-2 border-indigo-400'
                             : isDark
@@ -251,9 +251,9 @@ export function LobbyScreen() {
                         }`}
                       >
                         <div className="flex flex-col items-center gap-2">
-                          <span className="text-3xl">{m === '2-player' ? '👥' : '👥👥'}</span>
+                          <span className="text-4xl">{m === '2-player' ? '👥' : '👥👥'}</span>
                           <span>{m === '2-player' ? '2 Players' : '4 Players'}</span>
-                          <span className="text-xs opacity-70">{m === '2-player' ? 'Classic Duel' : 'Free for All'}</span>
+                          <span className="text-sm opacity-70 font-normal">{m === '2-player' ? 'Classic Duel' : 'Free for All'}</span>
                         </div>
                       </button>
                     ))}
@@ -261,14 +261,14 @@ export function LobbyScreen() {
                 </div>
 
                 {/* Color Dropdown */}
-                <div className="space-y-3">
-                  <label className={`block text-sm font-semibold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
+                <div className="space-y-2">
+                  <label className={`block text-sm font-bold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
                     Choose Color (Optional)
                   </label>
                   <select
                     value={selectedColor || ''}
                     onChange={(e) => setSelectedColor(e.target.value as PlayerColor || null)}
-                    className={`w-full px-5 py-4 border rounded-xl text-base transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 ${
+                    className={`w-full px-5 py-4 border-2 rounded-2xl text-base transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 ${
                       isDark 
                         ? 'bg-gray-800/50 border-gray-700 text-white' 
                         : 'bg-white border-gray-300 text-gray-900'
@@ -281,17 +281,6 @@ export function LobbyScreen() {
                       </option>
                     ))}
                   </select>
-                  {selectedColor && (
-                    <div className="flex items-center gap-3 mt-3">
-                      <div 
-                        className="w-8 h-8 rounded-lg shadow-md"
-                        style={{ backgroundColor: COLOR_HEX[selectedColor] }}
-                      />
-                      <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Selected: {selectedColor.charAt(0).toUpperCase() + selectedColor.slice(1)}
-                      </span>
-                    </div>
-                  )}
                 </div>
 
                 {/* Create Game Button */}
@@ -300,11 +289,11 @@ export function LobbyScreen() {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleCreate}
                   disabled={loading}
-                  className="w-full py-5 rounded-xl font-bold text-lg bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white shadow-lg shadow-purple-500/40 hover:shadow-purple-500/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-8"
+                  className="w-full py-5 rounded-2xl font-bold text-xl bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white shadow-lg shadow-purple-500/40 hover:shadow-purple-500/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-2"
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-3">
-                      <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       Creating...
                     </span>
                   ) : (
@@ -318,18 +307,18 @@ export function LobbyScreen() {
                 {/* Join with Code */}
                 <button
                   onClick={() => setView('join')}
-                  className={`w-full py-4 rounded-xl font-medium text-sm transition-all border-2 ${
+                  className={`w-full py-5 rounded-2xl font-medium text-base transition-all border-2 ${
                     isDark
                       ? 'text-gray-400 hover:text-white hover:bg-gray-800/50 border-gray-700 hover:border-gray-600'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 border-gray-300 hover:border-gray-400'
                   }`}
                 >
                   <div className="flex flex-col items-center gap-1">
-                    <span className="flex items-center gap-2 font-semibold">
+                    <span className="flex items-center gap-2 font-bold text-lg">
                       <span>🔗</span>
                       Join with Code
                     </span>
-                    <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                    <span className={`text-sm ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
                       Enter a room code to join a game
                     </span>
                   </div>
@@ -344,8 +333,8 @@ export function LobbyScreen() {
                 className="space-y-6"
               >
                 {/* Name Input */}
-                <div className="space-y-3">
-                  <label className={`block text-sm font-semibold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
+                <div className="space-y-2">
+                  <label className={`block text-sm font-bold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
                     Your Name
                   </label>
                   <input
@@ -354,7 +343,7 @@ export function LobbyScreen() {
                     onChange={(e) => setPlayerName(e.target.value)}
                     placeholder="Enter your name..."
                     maxLength={20}
-                    className={`w-full px-5 py-4 border rounded-xl text-base transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 ${
+                    className={`w-full px-5 py-4 border-2 rounded-2xl text-base transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 ${
                       isDark
                         ? 'bg-gray-800/50 border-gray-700 text-white placeholder-gray-500'
                         : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -363,8 +352,8 @@ export function LobbyScreen() {
                 </div>
 
                 {/* Room Code Input */}
-                <div className="space-y-3">
-                  <label className={`block text-sm font-semibold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
+                <div className="space-y-2">
+                  <label className={`block text-sm font-bold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
                     Room Code
                   </label>
                   <input
@@ -373,7 +362,7 @@ export function LobbyScreen() {
                     onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                     placeholder="XXXXXX"
                     maxLength={6}
-                    className={`w-full px-5 py-5 border rounded-xl transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 text-center text-3xl font-mono font-bold tracking-[0.5em] uppercase ${
+                    className={`w-full px-5 py-5 border-2 rounded-2xl transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 text-center text-3xl font-mono font-bold tracking-[0.5em] uppercase ${
                       isDark
                         ? 'bg-gray-800/50 border-gray-700 text-white placeholder-gray-500'
                         : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -382,14 +371,14 @@ export function LobbyScreen() {
                 </div>
 
                 {/* Color Dropdown */}
-                <div className="space-y-3">
-                  <label className={`block text-sm font-semibold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
+                <div className="space-y-2">
+                  <label className={`block text-sm font-bold uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
                     Choose Color (Optional)
                   </label>
                   <select
                     value={selectedColor || ''}
                     onChange={(e) => setSelectedColor(e.target.value as PlayerColor || null)}
-                    className={`w-full px-5 py-4 border rounded-xl text-base transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 ${
+                    className={`w-full px-5 py-4 border-2 rounded-2xl text-base transition-all focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 ${
                       isDark 
                         ? 'bg-gray-800/50 border-gray-700 text-white' 
                         : 'bg-white border-gray-300 text-gray-900'
@@ -410,11 +399,11 @@ export function LobbyScreen() {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleJoin}
                   disabled={loading}
-                  className="w-full py-5 rounded-xl font-bold text-lg bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/40 hover:shadow-blue-500/60 transition-all disabled:opacity-50 mt-8"
+                  className="w-full py-5 rounded-2xl font-bold text-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/40 hover:shadow-blue-500/60 transition-all disabled:opacity-50 mt-2"
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-3">
-                      <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       Joining...
                     </span>
                   ) : (
@@ -445,7 +434,7 @@ export function LobbyScreen() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="mt-4 p-3 rounded-xl bg-red-500/20 border border-red-500/30 text-red-300 text-sm text-center"
+                className="mt-4 p-4 rounded-2xl bg-red-500/20 border-2 border-red-500/30 text-red-300 text-sm text-center font-medium"
               >
                 ⚠️ {error}
               </motion.div>
@@ -453,7 +442,7 @@ export function LobbyScreen() {
           </AnimatePresence>
 
           {/* Footer */}
-          <p className={`text-center text-xs mt-8 ${isDark ? 'text-gray-600' : 'text-gray-500'}`}>
+          <p className={`text-center text-sm mt-8 ${isDark ? 'text-gray-600' : 'text-gray-500'}`}>
             Built with Next.js, Three.js & Pusher
           </p>
         </div>
