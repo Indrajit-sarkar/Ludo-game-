@@ -23,7 +23,7 @@ export async function GET(request: Request) {
     // Normalize room ID to uppercase
     const normalizedRoomId = roomId.trim().toUpperCase();
 
-    const room = getRoom(normalizedRoomId);
+    const room = await getRoom(normalizedRoomId);
     if (!room) {
       return NextResponse.json(
         { error: 'Room not found' },

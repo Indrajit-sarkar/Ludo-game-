@@ -32,12 +32,12 @@ export async function POST(request: Request) {
     }
 
     // Create the room
-    const room = createRoom(mode);
+    const room = await createRoom(mode);
     const playerId = generatePlayerId();
 
     // Add the host player
     const updatedState = addPlayer(room.state, playerId, playerName.trim(), true);
-    updateRoomState(room.id, updatedState);
+    await updateRoomState(room.id, updatedState);
 
     const response: CreateRoomResponse = {
       roomId: room.id,

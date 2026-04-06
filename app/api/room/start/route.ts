@@ -22,7 +22,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const room = getRoom(roomId);
+    const room = await getRoom(roomId);
     if (!room) {
       return NextResponse.json(
         { error: 'Room not found' },
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
 
     // Start the game
     const updatedState = startGame(room.state);
-    updateRoomState(roomId, updatedState);
+    await updateRoomState(roomId, updatedState);
 
     // Broadcast game start to all clients
     await broadcastGameState(roomId, 'game-started', updatedState);

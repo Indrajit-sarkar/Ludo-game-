@@ -25,7 +25,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const room = getRoom(roomId);
+    const room = await getRoom(roomId);
     if (!room) {
       return NextResponse.json(
         { error: 'Room not found' },
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
 
     // Execute the move
     const updatedState = executeMove(room.state, tokenId, playerId);
-    updateRoomState(roomId, updatedState);
+    await updateRoomState(roomId, updatedState);
 
     // Determine the event type
     const eventType = updatedState.phase === 'finished' ? 'game-over' : 'token-moved';

@@ -26,7 +26,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const room = getRoom(roomId);
+    const room = await getRoom(roomId);
     if (!room) {
       return NextResponse.json(
         { error: 'Room not found' },
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
 
     // Process the dice roll (server generates the value)
     const updatedState = processDiceRoll(room.state, playerId);
-    updateRoomState(roomId, updatedState);
+    await updateRoomState(roomId, updatedState);
 
     // Broadcast the result to all clients
     await broadcastGameState(roomId, 'dice-rolled', updatedState, {

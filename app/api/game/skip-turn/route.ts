@@ -6,7 +6,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { getRoom, updateRoomState } from '@/lib/room-store-kv';
+import { getRoom, updateRoomState } from '@/lib/room-store-upstash';
 import { broadcastGameState } from '@/lib/pusher-server';
 import { PlayerColor } from '@/game-engine/types';
 

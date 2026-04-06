@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     // Normalize room ID to uppercase
     const normalizedRoomId = roomId.trim().toUpperCase();
 
-    const room = getRoom(normalizedRoomId);
+    const room = await getRoom(normalizedRoomId);
     if (!room) {
       return NextResponse.json(
         { error: 'Room not found. Check the code and try again.' },
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 
     // Add the player
     const updatedState = addPlayer(room.state, playerId, playerName.trim(), false);
-    updateRoomState(normalizedRoomId, updatedState);
+    await updateRoomState(normalizedRoomId, updatedState);
 
     // Broadcast to all clients in the room
     await broadcastGameState(normalizedRoomId, 'player-joined', updatedState, {
