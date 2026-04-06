@@ -11,12 +11,13 @@ export function getPusherServer(): Pusher {
   if (!pusherInstance) {
     // Validate environment variables
     const appId = process.env.PUSHER_APP_ID;
-    const key = process.env.NEXT_PUBLIC_PUSHER_APP_KEY;
-    const secret = process.env.PUSHER_APP_SECRET;
+    const key = process.env.NEXT_PUBLIC_PUSHER_KEY;
+    const secret = process.env.PUSHER_SECRET;
     const cluster = process.env.NEXT_PUBLIC_PUSHER_CLUSTER;
 
     if (!appId || !key || !secret || !cluster) {
       console.warn('⚠️ Pusher credentials not configured. Using mock mode.');
+      console.warn('Missing:', { appId: !!appId, key: !!key, secret: !!secret, cluster: !!cluster });
       // Return a mock pusher that doesn't actually send events
       // This allows local development without Pusher
       return {
