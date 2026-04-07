@@ -18,13 +18,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setMounted(true);
     const stored = localStorage.getItem('ludo-theme') as Theme;
-    if (stored) {
-      setTheme(stored);
-    }
+    const initial = stored || 'dark';
+    setTheme(initial);
+    document.documentElement.classList.toggle('dark', initial === 'dark');
+    document.documentElement.classList.toggle('light', initial === 'light');
   }, []);
 
   useEffect(() => {
     if (mounted) {
+      // Tailwind v4 uses 'dark' class for dark mode
+      document.documentElement.classList.toggle('dark', theme === 'dark');
       document.documentElement.classList.toggle('light', theme === 'light');
       localStorage.setItem('ludo-theme', theme);
     }

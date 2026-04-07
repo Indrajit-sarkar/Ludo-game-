@@ -12,7 +12,7 @@ export function ThemeToggle() {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       onClick={toggleTheme}
-      className="fixed top-6 right-6 w-14 h-14 bg-white dark:bg-gray-800 backdrop-blur-xl rounded-full flex items-center justify-center border-2 border-gray-300 dark:border-gray-700 shadow-xl z-50 transition-all hover:shadow-2xl"
+      className="w-12 h-12 bg-white dark:bg-gray-800 backdrop-blur-xl rounded-full flex items-center justify-center border-2 border-gray-300 dark:border-gray-700 shadow-xl transition-all hover:shadow-2xl"
       aria-label="Toggle theme"
     >
       <AnimatePresence mode="wait">

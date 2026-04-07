@@ -10,8 +10,8 @@ import { COLOR_HEX } from '@/game-engine/constants';
 const EMOJI_REACTIONS = ['👍', '❤️', '😂', '😮', '😢', '🎉', '🔥', '👏'];
 
 export function ChatPanel() {
-  const { isChatOpen, messages, toggleChat, addMessage, editMessage, deleteMessage, addReaction } = useChatStore();
-  const { playerId, playerName, gameState } = useGameStore();
+  const { isChatOpen, messages, toggleChat, sendMessage, editMessage, deleteMessage, addReaction } = useChatStore();
+  const { playerId, playerName, gameState, roomId } = useGameStore();
   const [inputText, setInputText] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -30,7 +30,7 @@ export function ChatPanel() {
     } else {
       const myPlayer = gameState?.players.find(p => p.id === playerId);
       const message: ChatMessage = {
-        id: Date.now().toString(),
+        id: `${Date.now()}-${playerId}`,
         playerId,
         playerName,
         playerColor: myPlayer ? COLOR_HEX[myPlayer.color] : '#888',
@@ -38,8 +38,7 @@ export function ChatPanel() {
         timestamp: Date.now(),
         reactions: [],
       };
-      addMessage(message);
-      // TODO: Broadcast via Pusher
+      sendMessage(message, roomId || '');
     }
     setInputText('');
   };
@@ -196,15 +195,15 @@ export function ChatPanel() {
                 onClick={() => {
                   if (!playerId || !playerName) return;
                   const myPlayer = gameState?.players.find(p => p.id === playerId);
-                  addMessage({
-                    id: Date.now().toString(),
+                  sendMessage({
+                    id: `${Date.now()}-${playerId}`,
                     playerId,
                     playerName,
                     playerColor: myPlayer ? COLOR_HEX[myPlayer.color] : '#888',
                     emoji,
                     timestamp: Date.now(),
                     reactions: [],
-                  });
+                  }, roomId || '');
                   setShowEmojiPicker(false);
                 }}
                 className="text-2xl hover:scale-125 transition-transform"

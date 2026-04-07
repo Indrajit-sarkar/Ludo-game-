@@ -57,7 +57,15 @@ export function GameBoard() {
   const rollDice = useGameStore(s => s.rollDice);
   const error = useGameStore(s => s.error);
   const setError = useGameStore(s => s.setError);
+  const lastDiceValue = useGameStore(s => s.lastDiceValue);
+  const setLastDiceValue = useGameStore(s => s.setLastDiceValue);
   const { playSound } = useSound();
+
+  // Clear lastDiceValue after 2s when turn changes
+  useEffect(() => {
+    const timer = setTimeout(() => setLastDiceValue(null), 2000);
+    return () => clearTimeout(timer);
+  }, [gameState?.currentTurn, setLastDiceValue]);
   
   const { startTimer, stopTimer, elapsedSeconds } = useTimerStore();
   const { startTurnTimer, stopTurnTimer, tick, timeLeft, incrementMissedTurn, getMissedTurns } = useTurnTimerStore();
@@ -145,12 +153,11 @@ export function GameBoard() {
   return (
     <div className="relative w-full h-screen overflow-hidden bg-gray-100 dark:bg-gray-900">
       {/* Theme and Sound Toggles */}
-      <div className="fixed top-6 right-6 flex gap-3 z-50">
+      <div className="fixed top-4 right-4 flex gap-2 z-50">
         <SoundToggle />
         <ThemeToggle />
       </div>
-      
-      <GameTimer />
+
       <TurnTimer />
       <ChatButton />
       <ChatPanel />
@@ -171,66 +178,66 @@ export function GameBoard() {
 
       {/* UI Overlays */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Top: Turn Indicator */}
-        <div className="absolute top-20 sm:top-4 left-1/2 -translate-x-1/2 pointer-events-auto">
+
+        {/* Top Center: Turn Indicator */}
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 pointer-events-auto z-30">
           <TurnIndicator />
         </div>
 
-        {/* Player Panels - Responsive Layout */}
+        {/* Below Turn Indicator: Flip Clock */}
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-20">
+          <GameTimer />
+        </div>
+
+        {/* Player Panels - Desktop: sides */}
         <div className="hidden md:block">
-          {/* Left: Player Panels */}
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 space-y-2 pointer-events-auto">
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 flex flex-col gap-3 pointer-events-auto z-20">
             {gameState.players.slice(0, 2).map(player => (
               <PlayerPanel key={player.id} player={player} isCurrentTurn={player.color === currentPlayerColor} />
             ))}
           </div>
-
-          {/* Right: Player Panels */}
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 space-y-2 pointer-events-auto">
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex flex-col gap-3 pointer-events-auto z-20">
             {gameState.players.slice(2).map(player => (
               <PlayerPanel key={player.id} player={player} isCurrentTurn={player.color === currentPlayerColor} />
             ))}
           </div>
         </div>
 
-        {/* Mobile: Player Panels at Top */}
-        <div className="md:hidden absolute top-24 left-0 right-0 flex justify-center gap-2 px-4 pointer-events-auto">
+        {/* Mobile: Player Panels at top */}
+        <div className="md:hidden absolute top-20 left-0 right-0 flex justify-center gap-2 px-2 pointer-events-auto z-20">
           {gameState.players.map(player => (
             <PlayerPanel key={player.id} player={player} isCurrentTurn={player.color === currentPlayerColor} compact />
           ))}
         </div>
 
         {/* Bottom Center: Dice & Actions */}
-        <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 pointer-events-auto">
-          {/* Token selection prompt */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 pointer-events-auto z-30">
           <AnimatePresence>
             {mustSelectToken && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="px-4 sm:px-6 py-2 sm:py-3 rounded-2xl backdrop-blur-md bg-white dark:bg-white/10 border-2 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white text-xs sm:text-sm font-semibold shadow-xl"
+                className="px-5 py-2.5 rounded-2xl backdrop-blur-md bg-white/90 dark:bg-white/10 border-2 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white text-sm font-semibold shadow-xl"
               >
                 🎯 Click a glowing token to move it! (Rolled: {gameState.diceValue})
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* Dice Button */}
           <DiceButton
             onRoll={handleRollDice}
             canRoll={canRoll}
             isRolling={isDiceRolling}
-            diceValue={gameState.diceValue}
+            diceValue={gameState.diceValue ?? lastDiceValue}
             playerColor={myColor || 'red'}
           />
 
-          {/* Status text */}
           {!isMyTurn && gameState.phase !== 'finished' && (
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-gray-600 dark:text-white/40 text-xs sm:text-sm font-medium"
+              className="text-gray-600 dark:text-white/50 text-xs font-medium"
             >
               Waiting for {gameState.currentTurn} player&apos;s turn...
             </motion.p>
@@ -244,18 +251,17 @@ export function GameBoard() {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 50 }}
-              className="absolute bottom-4 right-4 p-4 rounded-xl backdrop-blur-md bg-red-500/20 border border-red-500/30 text-red-300 dark:text-red-300 light:text-red-600 text-sm max-w-xs pointer-events-auto"
+              className="absolute bottom-4 right-4 p-4 rounded-xl backdrop-blur-md bg-red-500/20 border border-red-500/30 text-red-300 text-sm max-w-xs pointer-events-auto z-50"
             >
               <div className="flex items-start gap-2">
                 <span>⚠️</span>
                 <span>{error}</span>
-                <button onClick={() => setError(null)} className="ml-2 text-red-400 hover:text-red-300 touch-feedback">✕</button>
+                <button onClick={() => setError(null)} className="ml-2 text-red-400 hover:text-red-300">✕</button>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Scoreboard */}
         <Scoreboard
           show={showScoreboard}
           onRematch={handleRematch}
